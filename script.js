@@ -20,7 +20,7 @@ const context = canvas.getContext('2d');
 let currentSize = 10;
 let bucketColor = '#FFFFFF';
 let currentColor = '#A51DAB';
-// let isEraser = false;
+let isEraser = false;
 // let isMouseDown = false;
 // let drawnArray = [];
 
@@ -36,7 +36,8 @@ let currentColor = '#A51DAB';
 
 // Setting Brush Color
 brushColorBtn.addEventListener('change', () => {
-
+  isEraser = false;
+  currentColor = `#${brushColorBtn.value}`;
 });
 
 // Setting Background Color
@@ -45,25 +46,26 @@ bucketColorBtn.addEventListener('change', () => {
 	createCanvas();
 });
 
-// // Eraser
-// eraser.addEventListener('click', () => {
+// Eraser
+eraser.addEventListener('click', () => {
+  isEraser = true;
+  brushIcon.style.color = 'white';
+  eraser.style.color = 'black';
+  activeToolEl.textContent = 'Eraser';
+  currentColor = bucketColor;
+  currentSize = 50;
+});
 
-//   brushIcon.style.color = 'white';
-//   eraser.style.color = 'black';
-//   activeToolEl.textContent = 'Eraser';
+// Switch back to Brush
+function switchToBrush() {
+  isEraser = false;
+  activeToolEl.textContent = 'Brush';
+  brushIcon.style.color = 'black';
+  eraser.style.color = 'white';
+  currentColor = `#${brushColorBtn.value}`;
+  currentSize = 10;
 
-// });
-
-// // Switch back to Brush
-// function switchToBrush() {
-//   isEraser = false;
-//   activeToolEl.textContent = 'Brush';
-//   brushIcon.style.color = 'black';
-//   eraser.style.color = 'white';
-//   currentColor = `#${brushColorBtn.value}`;
-//   currentSize = 10;
-
-// }
+}
 
 // Create Canvas
 function createCanvas() {
@@ -72,7 +74,7 @@ function createCanvas() {
   context.fillStyle = bucketColor;
   context.fillRect(0, 0, canvas.width, canvas.height);
   body.appendChild(canvas);
-
+  switchToBrush();
 }
 
 // // Clear Canvas
@@ -196,8 +198,8 @@ canvas.addEventListener('mouseup', () => {
 //   setTimeout(switchToBrush, 1500);
 // });
 
-// // Event Listener
-// brushIcon.addEventListener('click', switchToBrush);
+// Event Listener
+brushIcon.addEventListener('click', switchToBrush);
 
 // On Load
 createCanvas();
